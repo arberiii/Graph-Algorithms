@@ -8,7 +8,7 @@ type queue struct {
 	l []int
 }
 
-func BFS(g graph.Graph, s int) graph.Graph {
+func BFS(s int, g graph.Graph) graph.Graph {
 	tree := graph.NewGraph()
 	q := newQueue()
 	visited := make(map[int]bool)
@@ -26,6 +26,7 @@ func BFS(g graph.Graph, s int) graph.Graph {
 				q.add(v)
 				visited[v] = true
 				tree[u] = append(tree[u], v)
+				tree[v] = append(tree[v], u)
 			}
 		}
 	}
