@@ -1,22 +1,29 @@
 package bfs
 
-import "github.com/arberiii/Graph-Algorithms/graph"
+import (
+	"github.com/arberiii/Graph-Algorithms/graph"
+)
+
+type queue struct {
+	l []int
+}
 
 func BFS(g graph.Graph, s int) graph.Graph {
 	tree := graph.NewGraph()
-	var queue []int
+	q := newQueue()
 	visited := make(map[int]bool)
 
 	for k := range g {
 		visited[k] = false
 	}
-	queue = add(queue, s)
+	q.add(s)
+	visited[s] = true
 	tree[s] = []int{}
-	for len(queue) != 0 {
-		u := delete(queue)
-		for v := range g[u] {
+	for len(q.l) != 0 {
+		u := q.deleteV()
+		for _, v := range g[u] {
 			if visited[v] == false {
-				add(queue, v)
+				q.add(v)
 				visited[v] = true
 				tree[u] = append(tree[u], v)
 			}
@@ -25,13 +32,17 @@ func BFS(g graph.Graph, s int) graph.Graph {
 	return tree
 }
 
-func add(q []int, v int) []int {
-	q = append(q, v)
-	return q
+func (q *queue) add(v int) {
+	q.l = append(q.l, v)
 }
 
-func delete(q []int) int {
-	v := q[0]
-	q = q[1:]
-	return v
+func (q *queue) deleteV() int {
+	u := q.l[0]
+	q.l = q.l[1:]
+	return u
+}
+
+func newQueue() queue {
+	var q queue
+	return q
 }
