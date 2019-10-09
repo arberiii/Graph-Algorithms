@@ -1,7 +1,6 @@
 package sat
 
 import (
-	"fmt"
 	"testing"
 )
 
@@ -19,5 +18,21 @@ func TestSat2(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	fmt.Println(r)
+	for _, i := range c {
+		b1, b2 := false, false
+		if i.x < 0 {
+			b1 = !r[-i.x]
+		} else {
+			b1 = r[i.x]
+		}
+
+		if i.y < 0 {
+			b2 = !r[-i.y]
+		} else {
+			b2 = r[i.y]
+		}
+		if !(b1 || b2) {
+			t.Fatal("all clauses should be true")
+		}
+	}
 }
